@@ -5,13 +5,13 @@ services:
       dockerfile: Dockerfile
     volumes:
       # Mount the workspace folder
-      - ../..:/workspace:cached
+      - ..:/workspace:cached
       # Keep command history
       - devcontainer-bashhistory:/commandhistory
       # Mount docker socket for docker-in-docker
       - /var/run/docker.sock:/var/run/docker-host.sock
     ports:
-      - "5001:5000"  # Map host port 5001 to container port 5000 to avoid conflict
+      - "5001:5000" # Map host port 5001 to container port 5000 to avoid conflict
       - "8000:8000"
       - "8080:8080"
     # Use bash to keep container running
