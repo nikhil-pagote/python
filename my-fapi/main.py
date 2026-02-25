@@ -1,6 +1,4 @@
-def main():
-    print("Hello from my-fapi!")
-
+import uvicorn
 
 if __name__ == "__main__":
-    main()
+    uvicorn.run("my_fapi:app", app_dir="src", host="0.0.0.0", port=8000, reload=True)

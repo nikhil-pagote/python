@@ -13,6 +13,8 @@ RUN apt-get update && apt-get install -y \
     vim \
     nano \
     sudo \
+    lsof \
+    fuser \
     && rm -rf /var/lib/apt/lists/*
 
 # Install GitHub CLI
