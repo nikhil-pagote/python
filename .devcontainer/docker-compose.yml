@@ -8,8 +8,12 @@ services:
       - ..:/workspace:cached
       # Keep command history
       - devcontainer-bashhistory:/commandhistory
-      # Mount docker socket for docker-in-docker
-      - /var/run/docker.sock:/var/run/docker-host.sock
+      # Mount podman socket for podman-in-podman (rootless)
+      - /run/user/1000/podman/podman.sock:/var/run/docker-host.sock
+      # Forward host SSH agent for git authentication
+      - ${SSH_AUTH_SOCK}:/ssh-agent
+      # Mount host git config for git user identity
+      - ${HOME}/.gitconfig:/home/vscode/.gitconfig:ro
     ports:
       - "5001:5000" # Map host port 5001 to container port 5000 to avoid conflict
       - "8000:8000"
@@ -21,6 +25,7 @@ services:
     # Environment variables
     environment:
       - PYTHONPATH=/workspace
+      - SSH_AUTH_SOCK=/ssh-agent
 
 volumes:
   devcontainer-bashhistory:

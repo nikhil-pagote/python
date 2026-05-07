@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
     nano \
     sudo \
     lsof \
-    fuser \
+    psmisc \
     && rm -rf /var/lib/apt/lists/*
 
 # Install GitHub CLI
@@ -27,6 +27,10 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | d
 # Install uv (fast Python package manager)
 RUN pip install --upgrade pip && pip install uv
 
+# Install Node.js for Claude Code CLI
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
+    && apt-get install -y nodejs
+
 # Create a non-root user
 ARG USERNAME=vscode
 ARG USER_UID=1000
@@ -37,11 +41,14 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
-# Set the default user
-USER $USERNAME
-
 # Set the working directory
 WORKDIR /workspace
+
+# Install Claude Code CLI as root before switching to vscode user
+RUN npm install -g @anthropic-ai/claude-code
+
+# Set the default user
+USER $USERNAME
 
 # Install Python packages
 RUN pip install --upgrade pip && \
