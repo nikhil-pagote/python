@@ -32,9 +32,19 @@ def _orchestrator(name: str):
         from orchestrators.langchain_orchestrator import LangChainOrchestrator
 
         return LangChainOrchestrator()
-    from orchestrators.langgraph_orchestrator import LangGraphOrchestrator
+    if name == "langgraph":
+        from orchestrators.langgraph_orchestrator import LangGraphOrchestrator
 
-    return LangGraphOrchestrator()
+        return LangGraphOrchestrator()
+    if name == "crewai":
+        from orchestrators.crewai_orchestrator import CrewAIOrchestrator
+
+        return CrewAIOrchestrator()
+    if name == "google_adk":
+        from orchestrators.google_adk_orchestrator import GoogleADKOrchestrator
+
+        return GoogleADKOrchestrator()
+    raise ValueError(f"Unknown orchestrator: {name}")
 
 
 def ask(question: str, orchestrator: str) -> None:
@@ -57,7 +67,7 @@ def main() -> None:
     ask_p = sub.add_parser("ask", help="answer one question")
     ask_p.add_argument("question")
     ask_p.add_argument(
-        "--orchestrator", choices=["langchain", "langgraph"], default="langgraph"
+        "--orchestrator", choices=["langchain", "langgraph", "crewai", "google_adk"], default="langgraph"
     )
     sub.add_parser("benchmark", help="time all orchestrators side by side")
 
