@@ -4,7 +4,6 @@ Keeps configuration and secrets out of code. Import `config()` for settings and
 `secret()` for API keys.
 """
 
-from __future__ import annotations
 
 import os
 from functools import lru_cache

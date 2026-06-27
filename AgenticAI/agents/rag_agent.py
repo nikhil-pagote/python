@@ -5,7 +5,6 @@ behavior (tool-calling, planning, doc-grading loops), the agent loop lives here
 while the orchestrator stays the coordination layer underneath.
 """
 
-from __future__ import annotations
 
 from agents.base_agent import BaseAgent
 from orchestrators.base_orchestrator import BaseOrchestrator

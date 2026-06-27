@@ -1,6 +1,5 @@
 """Base agent interface — the common contract every agent implements."""
 
-from __future__ import annotations
 
 from abc import ABC, abstractmethod
 

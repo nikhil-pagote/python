@@ -5,7 +5,6 @@ chooses to use. Wrapping VectorMemory here lets a future tool-calling agent or
 orchestrator invoke retrieval as one option among many.
 """
 
-from __future__ import annotations
 
 from memory.vector_memory import VectorMemory
 from tools.base_tool import BaseTool

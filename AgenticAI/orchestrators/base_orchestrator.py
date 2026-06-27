@@ -5,7 +5,6 @@ contract, so orchestrators are swappable and directly comparable. This is the
 extension point: add a new file here per framework.
 """
 
-from __future__ import annotations
 
 from abc import ABC, abstractmethod
 

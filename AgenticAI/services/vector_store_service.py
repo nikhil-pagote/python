@@ -1,6 +1,5 @@
 """Vector store service — Pinecone index lifecycle and store construction."""
 
-from __future__ import annotations
 
 import time
 

@@ -1,6 +1,5 @@
 """Base tool interface — anything an agent can choose to call."""
 
-from __future__ import annotations
 
 from abc import ABC, abstractmethod
 

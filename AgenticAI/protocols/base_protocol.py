@@ -5,7 +5,6 @@ Protocols define how agents talk to each other or to external systems, e.g. MCP
 you add multi-agent communication.
 """
 
-from __future__ import annotations
 
 from abc import ABC, abstractmethod
 

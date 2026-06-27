@@ -1,6 +1,5 @@
 """Embedding service — Pinecone hosted inference (external service wrapper)."""
 
-from __future__ import annotations
 
 from langchain_pinecone import PineconeEmbeddings
 

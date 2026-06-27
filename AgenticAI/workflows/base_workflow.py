@@ -4,7 +4,6 @@ Workflows sequence tasks/agents — sequential, parallel, or hybrid. Add subclas
 here when you coordinate multiple agents.
 """
 
-from __future__ import annotations
 
 from abc import ABC, abstractmethod
 

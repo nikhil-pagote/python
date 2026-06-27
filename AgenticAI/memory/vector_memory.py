@@ -5,7 +5,6 @@ In an agentic system this is the RAG component (the agentic templates label it
 the most relevant on demand. Orchestrators, tools, and agents all read from it.
 """
 
-from __future__ import annotations
 
 from configs import config
 from memory.base_memory import BaseMemory

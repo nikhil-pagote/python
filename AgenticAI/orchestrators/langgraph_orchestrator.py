@@ -9,7 +9,6 @@ chain fundamentally cannot do.
                            └────── not relevant & retries ─▶ rewrite -> retrieve
 """
 
-from __future__ import annotations
 
 from langchain_core.output_parsers import StrOutputParser
 from langgraph.graph import END, START, StateGraph

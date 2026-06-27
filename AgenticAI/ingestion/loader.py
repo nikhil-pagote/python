@@ -5,7 +5,6 @@ filename stem is the source tag). Real projects point langchain_community loader
 (PDF/CSV/web) at this directory; here we read plain .md/.txt files.
 """
 
-from __future__ import annotations
 
 from pathlib import Path
 

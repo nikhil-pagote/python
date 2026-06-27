@@ -1,6 +1,5 @@
 """Common utilities: timing, logging, and small formatters."""
 
-from __future__ import annotations
 
 import logging
 import time

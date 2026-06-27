@@ -5,7 +5,6 @@ uv run AgenticAI/main.py ask "What is Pinecone used for?" --orchestrator langgra
 uv run AgenticAI/main.py benchmark
 """
 
-from __future__ import annotations
 
 import argparse
 

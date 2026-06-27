@@ -5,7 +5,6 @@ BaseOrchestrator contract so it is swappable with the LangGraph / CrewAI / ADK
 orchestrators. Retrieval and generation are timed separately for the benchmark.
 """
 
-from __future__ import annotations
 
 from memory.vector_memory import VectorMemory
 from orchestrators.base_orchestrator import BaseOrchestrator

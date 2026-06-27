@@ -5,7 +5,6 @@ requirements first, and reuse services.llm_service / memory.vector_memory so the
 comparison against the LangChain and LangGraph orchestrators stays fair.
 """
 
-from __future__ import annotations
 
 from orchestrators.base_orchestrator import BaseOrchestrator
 from utils.helpers import Timing

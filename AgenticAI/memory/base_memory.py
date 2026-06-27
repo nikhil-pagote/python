@@ -1,6 +1,5 @@
 """Base memory interface — short-term, long-term, or vector (RAG) memory."""
 
-from __future__ import annotations
 
 from abc import ABC, abstractmethod
 

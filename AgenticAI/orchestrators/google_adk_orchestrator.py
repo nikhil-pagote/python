@@ -5,7 +5,6 @@ Implement BaseOrchestrator.answer() with the Google Agent Development Kit. Add
 memory.vector_memory for parity with the other orchestrators.
 """
 
-from __future__ import annotations
 
 from orchestrators.base_orchestrator import BaseOrchestrator
 from utils.helpers import Timing
