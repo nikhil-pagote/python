@@ -1,0 +1,26 @@
+repos:
+  # - repo: https://github.com/psf/black
+  #   rev: 24.3.0
+  #   hooks:
+  #     - id: black
+
+  # - repo: https://github.com/pre-commit/mirrors-pylint
+  #   rev: v3.0.3
+  #   hooks:
+  #     - id: pylint
+  #       args: [--rcfile=.pylintrc]
+
+  # - repo: https://github.com/pre-commit/mirrors-isort
+  #   rev: v5.12.0
+  #   hooks:
+  #     - id: isort
+
+  # - repo: https://github.com/pycqa/flake8
+  #   rev: 6.1.0
+  #   hooks:
+  #     - id: flake8
+
+  - repo: https://github.com/astral-sh/ruff
+    rev: stable  # Always use the latest stable version
+    hooks:
+      - id: ruff

@@ -1,0 +1,36 @@
+# Configuration — kept separate from code and secrets.
+# Secrets (API keys) live in .env; everything tunable lives here.
+
+llm:
+  provider: groq
+  model: llama-3.1-8b-instant
+  temperature: 0
+
+embeddings:
+  provider: pinecone        # Pinecone hosted inference
+  model: llama-text-embed-v2
+  dimension: 1024
+
+vectordb:
+  provider: pinecone
+  index_name: rag-examples
+  metric: cosine
+  cloud: aws
+  region: us-east-1
+
+chunking:
+  chunk_size: 1000
+  chunk_overlap: 200
+
+retrieval:
+  k: 2
+
+agentic:                    # used by the LangGraph (agentic) orchestrator
+  max_retries: 2            # max query rewrites before answering with what we have
+
+benchmark:
+  queries:
+    - "What does LangGraph add on top of LangChain?"
+    - "Which provider serves models with low latency?"
+    - "What embedding model is used and what are its dimensions?"
+    - "What is Pinecone used for?"

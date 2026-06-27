@@ -1,0 +1,16 @@
+# Ignore local Conda environment
+env/
+
+# Ignore Jupyter and Python cache
+__pycache__/
+.ipynb_checkpoints/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.env
+.envrc
+*.log
+rag-dev
+src/frontend/.nicegui
+src/frontend/chat_exports
