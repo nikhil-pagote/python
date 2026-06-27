@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import time
+
 from langchain_pinecone import PineconeVectorStore
 from pinecone import Pinecone, ServerlessSpec
 
@@ -18,7 +20,8 @@ def _index_name() -> str:
 
 
 def ensure_index() -> None:
-    """Create the serverless index if it does not exist (idempotent)."""
+    """Create the serverless index if it does not exist, then wait until it is
+    ready (a brand-new index is not immediately queryable). Idempotent."""
     vdb = config()["vectordb"]
     pc = _client()
     if not pc.has_index(vdb["index_name"]):
@@ -28,6 +31,12 @@ def ensure_index() -> None:
             metric=vdb["metric"],
             spec=ServerlessSpec(cloud=vdb["cloud"], region=vdb["region"]),
         )
+        # A freshly created index needs a few seconds before it accepts
+        # upserts/queries — wait until it reports ready.
+        for _ in range(60):
+            if pc.describe_index(vdb["index_name"]).get("status", {}).get("ready"):
+                break
+            time.sleep(1)
 
 
 def get_vector_store() -> PineconeVectorStore:

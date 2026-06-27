@@ -347,6 +347,31 @@ uv pip install -e .
 uv pip install dist/my_project-1.0.0-py3-none-any.whl
 ```
 
+## Tool Management
+
+### Install and run global tools
+```bash
+# Install a tool globally (available system-wide)
+uv tool install ruff
+uv tool install black
+uv tool install httpie
+
+# Run a tool without installing it permanently
+uv tool run ruff check .
+uvx ruff check .         # shorthand for uv tool run
+
+# List installed tools
+uv tool list
+
+# Upgrade a tool
+uv tool upgrade ruff
+
+# Uninstall a tool
+uv tool uninstall ruff
+```
+
+> **Note:** `uv tool install` installs CLI tools globally (like `pipx`), while `uv add` adds packages as project dependencies.
+
 ## Advanced Usage
 
 ### Working with multiple Python versions

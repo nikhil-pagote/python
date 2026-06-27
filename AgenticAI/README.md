@@ -62,9 +62,9 @@ the query on a weak result (see its doc).
 | **[docs/setup.md](docs/setup.md)** | Full directory tree, dependencies, secrets, building the index, run commands |
 | [configs/config.yaml](configs/config.yaml) | All tunables (models, index, chunking, k) — config separate from code |
 
-> **Known issue (this env):** Python 3.14.6 makes the `groq` SDK ~24s/call
-> (the API itself is fast — verified via curl). Pin Python to 3.12/3.13 for
-> normal speed. See the bottom of this file.
+> **Runtime note:** On this environment httpx's IPv6 fallback stalls Groq calls
+> ~24s before using IPv4. `services/llm_service.py` passes an IPv4 `http_client`
+> to `ChatGroq`, which resolves it (calls run in ~0.2s). No Python change needed.
 
 ## Quick start
 

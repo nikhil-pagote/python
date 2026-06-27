@@ -32,9 +32,11 @@ The difference is **who controls the flow**:
 > runtime (agentic)?
 
 Plain RAG is **not** agentic — but it's the core an agent uses. That's why this
-project uses an agentic structure with RAG as the shared core: today the
-orchestrators run a fixed `retrieve → generate`; the structure leaves room to
-make them agentic (tool-calling, doc-grading loops) as you grow.
+project uses an agentic structure with RAG as the shared core: the **LangChain**
+orchestrator runs a fixed `retrieve → generate`, while the **LangGraph**
+orchestrator is **agentic** — it grades its own retrieval and rewrites the query
+on a miss (see below). The structure leaves room to grow further (multi-source
+retrieval, tool-calling, planning).
 
 ## The layout
 
@@ -83,9 +85,9 @@ class BaseOrchestrator(ABC):
     def answer(self, question: str) -> Timing: ...
 ```
 
-- **`langchain_orchestrator.py`** — `RAG_PROMPT | llm` piped after the retriever.
-- **`langgraph_orchestrator.py`** — a `StateGraph` with `retrieve` → `generate`
-  nodes over a shared `State`.
+- **`langchain_orchestrator.py`** — `RAG_PROMPT | llm` piped after the retriever (fixed).
+- **`langgraph_orchestrator.py`** — an **agentic** `StateGraph`: `retrieve → grade →`
+  (relevant?) `generate`, else `rewrite → retrieve` (bounded by `agentic.max_retries`).
 - **`crewai_orchestrator.py`, `google_adk_orchestrator.py`** — stubs that raise
   `NotImplementedError` with instructions.
 
@@ -108,7 +110,7 @@ Both call the *same* retriever and model, so raw latency is nearly identical —
 retrieval and generation dominate; orchestration overhead is sub-millisecond. The
 benchmark shows it; the decision is architectural:
 
-| Dimension | LangChain (LCEL chain) | LangGraph (StateGraph) |
+| Dimension | LangChain (LCEL chain) | LangGraph (agentic) |
 |-----------|------------------------|------------------------|
 | Mental model | A pipeline: `a \| b \| c` | A state machine: nodes + edges |
 | Best for | Linear, fixed flows | Branching, loops, retries, human-in-the-loop |
@@ -116,19 +118,25 @@ benchmark shows it; the decision is architectural:
 | State | Passed along the pipe | Explicit shared `State` (TypedDict) |
 | Persistence/memory | Bring your own | Built-in checkpointers + `thread_id` |
 
-## From RAG to Agentic RAG (where this grows)
+## Agentic RAG (implemented in the LangGraph orchestrator)
 
-The LangGraph orchestrator is the seed. Add a `grade_documents` node and a
-conditional edge back to `retrieve`, and it becomes a self-correcting loop a
-plain LCEL chain *cannot* express — this is where LangGraph (and later CrewAI /
-Google ADK agents) earns the agentic structure:
+The LangGraph orchestrator is a self-correcting loop: it **grades** its own
+retrieval and, on a weak result, **rewrites** the query and retrieves again
+(bounded by `agentic.max_retries`). This is what a plain LCEL chain *cannot*
+express. The `ask` command prints the path taken, e.g.
+`retrieve -> grade:relevant -> generate`.
 
 ```mermaid
 flowchart LR
     START((START)) --> R[retrieve]
-    R --> Gr[grade_documents]
-    Gr -->|weak| RW[rewrite_query] --> R
-    Gr -->|good| G[generate] --> E((END))
+    R --> Gr[grade]
+    Gr -->|not relevant| RW[rewrite] --> R
+    Gr -->|relevant| G[generate] --> E((END))
 ```
+
+**Where it grows next** (from the 2026 agentic-RAG blueprint in
+`docs/1782553002270.jpeg`): multi-source retrieval (BM25/SQL), a retrieval-
+strategy selector, answer verification + citations, session/long-term memory,
+and the CrewAI / Google ADK orchestrators.
 
 See [setup.md](setup.md) for installation and run commands.

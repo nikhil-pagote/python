@@ -42,7 +42,7 @@ AgenticAI/
 ├── orchestrators/           coordination layer — the swap point
 │   ├── base_orchestrator.py     shared contract
 │   ├── langchain_orchestrator.py   ✅ LCEL chain
-│   ├── langgraph_orchestrator.py   ✅ StateGraph
+│   ├── langgraph_orchestrator.py   ✅ agentic StateGraph (grade + rewrite loop)
 │   ├── crewai_orchestrator.py      🧩 stub
 │   └── google_adk_orchestrator.py  🧩 stub
 ├── services/                external service wrappers

@@ -10,8 +10,6 @@ services:
       - devcontainer-bashhistory:/commandhistory
       # Mount podman socket for podman-in-podman (rootless)
       - /run/user/1000/podman/podman.sock:/var/run/docker-host.sock
-      # Forward host SSH agent for git authentication
-      - ${SSH_AUTH_SOCK}:/ssh-agent
       # Mount host git config for git user identity
       - ${HOME}/.gitconfig:/home/vscode/.gitconfig:ro
     ports:
@@ -25,7 +23,6 @@ services:
     # Environment variables
     environment:
       - PYTHONPATH=/workspace
-      - SSH_AUTH_SOCK=/ssh-agent
 
 volumes:
   devcontainer-bashhistory:
