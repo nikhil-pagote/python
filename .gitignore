@@ -22,7 +22,7 @@ htmlcov/
 .ipynb_checkpoints/
 
 # Claude Code local settings
-.claude/
+.claude/settings.local.json
 
 # OS
 .DS_Store
