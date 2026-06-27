@@ -38,4 +38,20 @@ LCEL chain and the LangGraph graph on the same task.
    and return a `Timing` (reuse `utils.helpers`).
 3. Register it in `main.py` (`_orchestrator`) and `scripts/benchmark.py`.
 
+## Run
+
+> Not yet implemented — `crewai_orchestrator.py` raises `NotImplementedError`.
+> Once implemented, the commands will be:
+
+```bash
+# Ingest documents from AgenticAI/data/documents/ into Pinecone
+uv run AgenticAI/main.py ingest
+
+# Ask a question using the CrewAI orchestrator
+uv run AgenticAI/main.py ask "What is Pinecone used for?" --orchestrator crewai
+
+# Benchmark all orchestrators side by side
+uv run AgenticAI/main.py benchmark
+```
+
 Docs: https://docs.crewai.com/

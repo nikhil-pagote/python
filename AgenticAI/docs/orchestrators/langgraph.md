@@ -59,12 +59,20 @@ and conditional edges to choose between sources.
 ## Run
 
 ```bash
+# Ingest documents from AgenticAI/data/documents/ into Pinecone
+uv run AgenticAI/main.py ingest
+
+# Ask a question using the LangGraph orchestrator
 uv run AgenticAI/main.py ask "What does LangGraph add on top of LangChain?" --orchestrator langgraph
 # the printed `trace:` line shows the path, e.g. retrieve -> grade:relevant -> generate
+
+# Benchmark all orchestrators side by side
+uv run AgenticAI/main.py benchmark
 ```
 
-> Note: on Python 3.14 the `groq` SDK is currently slow (~24s/call), so each
-> graded answer takes longer than the LCEL chain. See the repo README for the fix.
+> Note: the agentic path makes extra LLM calls (grade, and rewrite on a miss),
+> so it costs a little more than the LCEL chain — in the benchmark ~120ms for the
+> grading step. That's the agentic tradeoff: more calls for self-correction.
 
 Docs: https://langchain-ai.github.io/langgraph/  ·  Agentic RAG tutorial:
 https://langchain-ai.github.io/langgraph/tutorials/rag/langgraph_agentic_rag/

@@ -47,7 +47,14 @@ retrieval or retry — for that, see the [LangGraph orchestrator](langgraph.md).
 ## Run
 
 ```bash
+# Ingest documents from AgenticAI/data/documents/ into Pinecone
+uv run AgenticAI/main.py ingest
+
+# Ask a question using the LangChain orchestrator
 uv run AgenticAI/main.py ask "What is Pinecone used for?" --orchestrator langchain
+
+# Benchmark all orchestrators side by side
+uv run AgenticAI/main.py benchmark
 ```
 
 Docs: https://python.langchain.com/docs/concepts/lcel/

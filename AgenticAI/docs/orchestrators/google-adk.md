@@ -39,4 +39,20 @@ the LangChain, LangGraph, and CrewAI orchestrators on the identical RAG task.
    return a `Timing`.
 3. Register it in `main.py` (`_orchestrator`) and `scripts/benchmark.py`.
 
+## Run
+
+> Not yet implemented — `google_adk_orchestrator.py` raises `NotImplementedError`.
+> Once implemented, the commands will be:
+
+```bash
+# Ingest documents from AgenticAI/data/documents/ into Pinecone
+uv run AgenticAI/main.py ingest
+
+# Ask a question using the Google ADK orchestrator
+uv run AgenticAI/main.py ask "What is Pinecone used for?" --orchestrator google_adk
+
+# Benchmark all orchestrators side by side
+uv run AgenticAI/main.py benchmark
+```
+
 Docs: https://google.github.io/adk-docs/
