@@ -1,0 +1,25 @@
+{
+  "skill_name": "jupyter",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "start jupyter",
+      "expected_output": "Runs `uv run jupyter notebook --no-browser` from /home/nikhil/Documents/python, checks if already running first, then prints the server URL with token"
+    },
+    {
+      "id": 2,
+      "prompt": "open the langchain_rag_pipeline notebook",
+      "expected_output": "Starts jupyter pointing at AgenticAI/notebooks/langchain_rag_pipeline.ipynb, prints the URL"
+    },
+    {
+      "id": 3,
+      "prompt": "stop jupyter",
+      "expected_output": "Kills the jupyter process with pkill, confirms it stopped"
+    },
+    {
+      "id": 4,
+      "prompt": "restart the notebook server",
+      "expected_output": "Stops any running jupyter process, then starts a fresh one, prints the new URL"
+    }
+  ]
+}
