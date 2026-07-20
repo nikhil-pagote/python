@@ -2,6 +2,9 @@
 Claude_MVP/RustPython/
 Claude_MVP/chatbot-ollama/
 
+# Interview prep (personal, not part of this project)
+Interview-prep/
+
 # Python
 __pycache__/
 *.py[cod]
