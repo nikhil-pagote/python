@@ -328,7 +328,7 @@ uv run --dev python script.py
 
 ### Build project
 ```bash
-# Build wheel and source distribution
+# Build wheel and source distribution -> dist/*.whl + dist/*.tar.gz
 uv build
 
 # Build only wheel
@@ -336,6 +336,31 @@ uv build --wheel
 
 # Build only source distribution
 uv build --sdist
+
+# Build a different project directory into a chosen output dir
+uv build ./my-project --out-dir dist/
+```
+
+### Register a CLI entry point (before building)
+```toml
+# pyproject.toml
+[project.scripts]
+my-cli = "my_project.cli:main"   # installs a `my-cli` command on PATH, calling main() in my_project/cli.py
+```
+
+### Publish to a package index
+```bash
+# Publish everything in dist/ to PyPI (needs a token)
+uv publish
+
+# Publish to a private/internal index
+uv publish --index my-company
+
+# Explicit token instead of env var
+uv publish --token pypi-xxxxxxxx
+
+# Token can also be set via env var
+UV_PUBLISH_TOKEN=pypi-xxxxxxxx uv publish
 ```
 
 ### Install project
@@ -345,6 +370,9 @@ uv pip install -e .
 
 # Install from built wheel
 uv pip install dist/my_project-1.0.0-py3-none-any.whl
+
+# Install a built CLI tool globally, isolated from any project (pipx-style)
+uv tool install dist/my_project-1.0.0-py3-none-any.whl
 ```
 
 ## Tool Management
@@ -452,13 +480,23 @@ quote-style = "double"
 indent-style = "space"
 ```
 
-### Pre-commit hooks
+### Pre-commit hooks — prefer `prek` over `pre-commit`
+
+`prek` is a Rust-based, drop-in reimplementation of the Python `pre-commit`
+framework — same `.pre-commit-config.yaml` format, same hook ecosystem, but
+a single fast binary instead of a Python package with its own per-hook
+virtualenvs. Same relationship as ruff has to black/pylint.
 
 ```bash
-# Add pre-commit
-uv add pre-commit --dev
+# Install prek as a global tool (no project dependency needed)
+uv tool install prek
 
-# Create .pre-commit-config.yaml with ruff
+# Or run it ad hoc without installing
+uvx prek run --all-files
+```
+
+```bash
+# Create .pre-commit-config.yaml with ruff (unchanged format, prek reads it too)
 cat > .pre-commit-config.yaml << EOF
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
@@ -471,12 +509,17 @@ repos:
       - id: ruff-format
 EOF
 
-# Install pre-commit hooks
-uv run pre-commit install
+# Install git hooks
+prek install
 
-# Run pre-commit on all files
-uv run pre-commit run --all-files
+# Run on all files
+prek run --all-files
 ```
+
+Falling back to the traditional Python `pre-commit` package still works the
+same way (`uv add pre-commit --dev`, `uv run pre-commit install`, `uv run
+pre-commit run --all-files`) if a project already depends on it — but for a
+new project, reach for `prek` first.
 
 ### Environment variables and scripts
 ```bash
@@ -499,7 +542,8 @@ alias uvfmt="uv run ruff format . && uv run ruff check --fix ."
 | `uv remove package` | Remove dependency |
 | `uv sync` | Install/update dependencies |
 | `uv run cmd` | Run command in project environment |
-| `uv build` | Build project |
+| `uv build` | Build wheel + sdist into `dist/` |
+| `uv publish` | Publish `dist/` to a package index |
 | `uv lock` | Update lock file |
 | `uv tree` | Show dependency tree |
 | **Code Quality (Ruff)** | |
