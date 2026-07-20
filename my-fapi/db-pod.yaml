@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-fapi-db
+spec:
+  containers:
+    - name: postgres
+      image: docker.io/library/postgres:16
+      env:
+        - name: POSTGRES_USER
+          value: my_fapi
+        - name: POSTGRES_PASSWORD
+          value: my_fapi
+        - name: POSTGRES_DB
+          value: my_fapi
+      ports:
+        - containerPort: 5432
+          hostPort: 5432
+      volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+
+    - name: pgadmin
+      image: docker.io/dpage/pgadmin4:latest
+      env:
+        - name: PGADMIN_DEFAULT_EMAIL
+          value: admin@example.com
+        - name: PGADMIN_DEFAULT_PASSWORD
+          value: admin
+      ports:
+        - containerPort: 80
+          hostPort: 5050
+
+  volumes:
+    - name: postgres-data
+      persistentVolumeClaim:
+        claimName: my-fapi-postgres-data
