@@ -95,6 +95,24 @@ uv add git+https://github.com/user/repo.git
 uv add -e ./local-package
 ```
 
+### `pip freeze` / `pip install -r requirements.txt` equivalents
+
+```bash
+# Drop-in, pip-compatible interface (not project-aware, same as real pip)
+uv pip freeze
+uv pip install -r requirements.txt
+
+# uv-native equivalent: uv.lock IS the "freeze" snapshot, kept automatically
+# by every `uv add`/`uv lock` — no separate freeze step needed
+uv sync                                                     # = pip install -r <frozen requirements>
+
+# Export uv.lock to a requirements.txt, e.g. for a Dockerfile that expects one
+uv export --format requirements-txt -o requirements.txt
+
+# Import an existing requirements.txt into pyproject.toml + uv.lock
+uv add -r requirements.txt
+```
+
 ### Remove dependencies
 ```bash
 # Remove dependency
