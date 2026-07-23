@@ -26,10 +26,18 @@ services:
       # github.com must already be in the host's known_hosts)
       - ${HOME}/.ssh:/home/vscode/.ssh:ro
     ports:
-      - "5001:5000" # Map host port 5001 to container port 5000 to avoid conflict
-      - "8000:8000"
-      - "8080:8080"
-    # Use bash to keep container running
+      # Long-form syntax: podman-compose's `docker compose config` output passes
+      # short-form ports through as plain strings, which Zed's devcontainer
+      # support can't deserialize (expects the structured long form).
+      - target: 5000
+        published: "5001" # avoid host port 5000 conflict
+      - target: 8000
+        published: "8000"
+      - target: 8080
+        published: "8080"
+    # No-op PID 1 to keep the container alive. Devcontainers start without a
+    # TTY, so an interactive shell here would read EOF and exit immediately.
+    # Editor/exec terminals are separate sessions and don't use this command.
     command: sleep infinity
     # Set working directory
     working_dir: /workspace

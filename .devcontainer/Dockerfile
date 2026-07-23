@@ -60,6 +60,3 @@ RUN uv tool install ruff && \
 
 # Expose common ports
 EXPOSE 5000 8000 8080
-
-# Set the default command
-CMD ["bash"]
