@@ -69,6 +69,12 @@ Use `/devcontainer` skill to scaffold devcontainer config in a new project.
 - Python app: `Claude_MVP/python/`
 - See `Claude_MVP/shopping_cart_rag_plan.md` for context
 
+### `PyO3/` — PyO3 learning examples
+
+- Standalone maturin projects under `PyO3/examples/` (Rust ↔ Python bindings)
+- Build inside the devcontainer: `cd PyO3/examples/<name> && maturin develop`
+- Docs: `PyO3/README.md`, `PyO3/docs/`
+
 ## Known Issues
 
 - Old uvicorn processes bind to `localhost` instead of `0.0.0.0`, blocking host access. Find and kill with:

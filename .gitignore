@@ -24,8 +24,11 @@ htmlcov/
 # Jupyter
 .ipynb_checkpoints/
 
+# Rust / PyO3
+target/
+
 # Claude Code local settings
-.claude/settings.local.json
+**/.claude/settings.local.json
 
 # OS
 .DS_Store
