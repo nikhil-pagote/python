@@ -24,9 +24,6 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | d
     && apt-get update \
     && apt-get install gh -y
 
-# Install uv (fast Python package manager)
-RUN pip install --upgrade pip && pip install uv
-
 # Install Node.js for Claude Code CLI
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
     && apt-get install -y nodejs
@@ -50,9 +47,16 @@ RUN npm install -g @anthropic-ai/claude-code
 # Set the default user
 USER $USERNAME
 
-# Install Python packages
-RUN pip install --upgrade pip && \
-    pip install flask pytest black flake8 isort jupyter requests pandas numpy
+# Install uv (fast Python package manager)
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Install Rust toolchain (for PyO3 examples)
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/home/vscode/.local/bin:/home/vscode/.cargo/bin:${PATH}"
+
+# Install standalone CLI tools via uv tool (not project dependencies)
+RUN uv tool install ruff && \
+    uv tool install maturin
 
 # Expose common ports
 EXPOSE 5000 8000 8080

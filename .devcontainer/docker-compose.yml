@@ -1,8 +1,18 @@
+# Single-service setup, no inter-container networking needed. Podman disallows
+# combining --userns with --pod, and podman-compose pods services by default,
+# so disable pod creation to let userns_mode: keep-id (below) work.
+x-podman:
+  in_pod: false
+
 services:
   devcontainer:
     build:
       context: .
       dockerfile: Dockerfile
+    # Map host UID <-> container UID 1:1 (rootless Podman default otherwise
+    # maps the host user to container root, leaving the bind-mounted
+    # /workspace unwritable by the non-root vscode user)
+    userns_mode: "keep-id"
     volumes:
       # Mount the workspace folder
       - ..:/workspace:cached
