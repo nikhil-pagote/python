@@ -22,6 +22,9 @@ services:
       - /run/user/1000/podman/podman.sock:/var/run/docker-host.sock
       # Mount host git config for git user identity
       - ${HOME}/.gitconfig:/home/vscode/.gitconfig:ro
+      # Mount host SSH keys/known_hosts for git push over SSH (read-only, so
+      # github.com must already be in the host's known_hosts)
+      - ${HOME}/.ssh:/home/vscode/.ssh:ro
     ports:
       - "5001:5000" # Map host port 5001 to container port 5000 to avoid conflict
       - "8000:8000"
