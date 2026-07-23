@@ -1,0 +1,14 @@
+[package]
+name = "embed_python"
+version = "0.1.0"
+edition = "2021"
+
+# A plain binary crate — no [lib], no cdylib. This is the opposite direction
+# from the other examples: Rust starts CPython, rather than Python loading Rust.
+[dependencies.pyo3]
+version = "0.29"
+# auto-initialize boots the interpreter on first use. It is mutually exclusive
+# with "extension-module": that feature deliberately leaves libpython unlinked
+# because an importing interpreter supplies the symbols, but an embedding
+# binary has no host interpreter and must link libpython itself.
+features = ["auto-initialize"]
