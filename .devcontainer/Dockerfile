@@ -54,6 +54,16 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 ENV PATH="/home/vscode/.local/bin:/home/vscode/.cargo/bin:${PATH}"
 
+# rustup's default profile ships a `rust-analyzer` proxy shim in ~/.cargo/bin
+# WITHOUT the component behind it. Editors find that shim on PATH, prefer it
+# over their own bundled copy, and it dies with "Unknown binary
+# 'rust-analyzer'" — surfacing as "proc-macro-srv is not running", which breaks
+# expansion of PyO3's #[pymodule]/#[pyclass] macros. Installing the component
+# makes the shim real and version-matched to the toolchain (ABI-compatible with
+# the compiler that builds the proc macros). rust-src backs go-to-definition
+# into std.
+RUN rustup component add rust-analyzer rust-src
+
 # Install standalone CLI tools via uv tool (not project dependencies)
 RUN uv tool install ruff && \
     uv tool install maturin
