@@ -7,7 +7,8 @@
 4. [Virtual Environments](#virtual-environments)
 5. [Code Quality Tools](#code-quality-tools)
 6. [Running & Building](#running--building)
-7. [Advanced Usage](#advanced-usage)
+7. [Tool Management](#tool-management)
+8. [Advanced Usage](#advanced-usage)
 
 ## Installation & Setup
 
@@ -418,6 +419,34 @@ uv tool uninstall ruff
 
 > **Note:** `uv tool install` installs CLI tools globally (like `pipx`), while `uv add` adds packages as project dependencies.
 
+### uvx - run a tool in a throwaway environment
+
+`uvx` is a shorthand alias for `uv tool run` — it spins up a temporary,
+cached environment for the tool, runs it, and does not add anything to the
+current project. Good for one-off/CI use; use `uv tool install` instead when
+you'll reach for the same tool repeatedly.
+
+```bash
+# Run the latest version of a tool, no install step
+uvx ruff check .
+uvx black --check .
+
+# Pin a specific tool version
+uvx ruff@0.8.4 check .
+
+# Run with a specific Python version
+uvx --python 3.11 ruff check .
+
+# Run a tool that isn't the package name (--from disambiguates)
+uvx --from httpie http GET https://example.com
+
+# Run a tool straight from a git repo
+uvx --from git+https://github.com/psf/black black .
+
+# Pass extra dependencies into the tool's throwaway environment
+uvx --with requests httpie
+```
+
 ## Advanced Usage
 
 ### Working with multiple Python versions
@@ -564,6 +593,7 @@ alias uvfmt="uv run ruff format . && uv run ruff check --fix ."
 | `uv publish` | Publish `dist/` to a package index |
 | `uv lock` | Update lock file |
 | `uv tree` | Show dependency tree |
+| `uvx tool` | Run a tool in a throwaway env (no install) |
 | **Code Quality (Ruff)** | |
 | `uv run ruff format .` | Format code |
 | `uv run ruff check .` | Lint code |
